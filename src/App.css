@@ -1,84 +1,140 @@
+/* ---------------- GLOBAL ---------------- */
+
 body {
   margin: 0;
-  padding: 0;
-  background-image: url(calculator2.jpeg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover; /* covers full screen */
-  min-height: 100vh;
   font-family: "Poppins", sans-serif;
-}
-
-.calc-container {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  align-items: center;
+  min-height: 100vh;
+  color: #fff;
+  overflow: hidden;
+
+  background-image: url("calculator2.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
-.calculator {
-  width: 380px;
-  background: #2b2b2b;
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0px 0px 20px #00000080;
+
+
+/* ---------------- CALCULATOR CONTAINER ---------------- */
+.calculator-container {
+  width: 400px;
+  padding: 35px;
+  background: rgba(184, 8, 17, 0.1);
+  border-radius: 25px;
+  box-shadow: 0 8px 40px rgba(0, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+  text-align: center;
+  transition: 0.4s ease-in-out;
 }
 
-.display {
-  width: 100%;
-  height: 70px;
+.calculator-container:hover {
+  box-shadow: 0 10px 50px rgba(0, 255, 255, 0.5);
+}
+
+.calculator-container h2 {
+  margin-bottom: 25px;
   font-size: 28px;
+  font-weight: 600;
+  text-shadow: 0 0 15px #00eaff;
+}
+
+/* ---------------- DISPLAY ---------------- */
+.display {
+  background: rgba(255,255,255,0.12);
+  padding: 18px;
+  border-radius: 18px;
+  margin-bottom: 25px;
   text-align: right;
-  padding: 10px;
-  background: #000;
-  color: #0aff8a;
-  border: none;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  box-shadow: inset 0 0 15px rgba(0,255,255,0.2);
 }
 
-.sci-row,
-.grid {
+.input {
+  font-size: 28px;
+  min-height: 32px;
+  word-wrap: break-word;
+}
+
+.result {
+  font-size: 22px;
+  color: #00eaff;
+  min-height: 26px;
+  word-wrap: break-word;
+  text-shadow: 0 0 8px #00eaff;
+}
+
+/* ---------------- BUTTONS ---------------- */
+.buttons {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.grid {
   grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
 button {
-  height: 60px;
+  padding: 18px;
   font-size: 18px;
-  background: #3b3b3b;
   border: none;
-  border-radius: 10px;
-  color: white;
+  border-radius: 15px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,255,255,0.25);
 }
 
 button:hover {
-  background: #505050;
+  background: rgba(0, 255, 255, 0.25);
+  box-shadow: 0 4px 18px #00eaff;
+  transform: translateY(-2px);
 }
 
-.equal {
-  background: #28a745;
+/* ---------------- SPECIAL BUTTONS ---------------- */
+.btn-red {
+  background: rgba(255,50,50,0.35);
 }
 
-.equal:hover {
-  background: #1f8b38;
+.btn-red:hover {
+  background: rgba(255,0,0,0.6);
 }
 
-.clear {
-  background: #d9534f;
+.btn-operator {
+  background: rgba(0,255,255,0.25);
 }
 
-.clear:hover {
-  background: #b84642;
+.btn-equal {
+  background: rgba(0,200,255,0.6);
+  color: #fff;
+  font-weight: bold;
 }
 
-button:active {
-  transform: scale(0.95);
+.btn-scientific {
+  background: rgba(255,255,255,0.1);
+  font-size: 16px;
+}
+
+.btn-zero {
+  grid-column: span 2;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 450px) {
+  .calculator-container {
+    width: 90%;
+    padding: 25px;
+  }
+
+  .display {
+    padding: 15px;
+  }
+
+  button {
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  .calculator-container h2 {
+    font-size: 24px;
+  }
 }

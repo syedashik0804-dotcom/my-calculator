@@ -2,93 +2,89 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [value, setValue] = useState("");
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState("");
 
-  const press = (val) => {
-    setValue((prev) => prev + val);
+  const handleClick = (value) => {
+    setInput((prev) => prev + value);
   };
 
-  const clearAll = () => setValue("");
-
-  const backspace = () => {
-    setValue(value.slice(0, -1));
+  const handleClear = () => {
+    setInput("");
+    setResult("");
   };
 
-  const calculate = () => {
-    try {
-      const result = eval(value);
-      setValue(result.toString());
-    } catch {
-      setValue("Error");
+  const handleBackspace = () => {
+    setInput((prev) => prev.slice(0, -1));
+  };
+
+  // Helper function: format number nicely
+  const formatNumber = (num) => {
+    if (num === Infinity || num === -Infinity) return "Infinity";
+    if (isNaN(num)) return "Error";
+
+    const absNum = Math.abs(num);
+    if ((absNum !== 0 && absNum < 0.001) || absNum >= 1e6) {
+      // scientific notation for very small or very large numbers
+      return num.toExponential(6);
+    } else {
+      // normal notation, remove trailing zeros
+      return num.toFixed(6).replace(/\.?0+$/, "");
     }
   };
 
-  const sci = (fn) => {
+  const handleCalculate = () => {
     try {
-      const num = parseFloat(value);
-      if (isNaN(num)) return setValue("Error");
-
-      let res = 0;
-
-      if (fn === "sin") res = Math.sin(num);
-      if (fn === "cos") res = Math.cos(num);
-      if (fn === "tan") res = Math.tan(num);
-      if (fn === "log") res = Math.log10(num);
-      if (fn === "ln") res = Math.log(num);
-      if (fn === "sqrt") res = Math.sqrt(num);
-      if (fn === "pow2") res = Math.pow(num, 2);
-      if (fn === "pow3") res = Math.pow(num, 3);
-
-      setValue(res.toString());
+      const evalResult = eval(input); // simple eval
+      setResult(formatNumber(evalResult));
     } catch {
-      setValue("Error");
+      setResult("Error");
     }
   };
 
   return (
-    <div className="calc-container">
-      <div className="calculator">
-        <input type="text" value={value} className="display" disabled />
+    <div className="calculator-container">
+      <h2>🧮 Scientific Calculator</h2>
+      <div className="display">
+        <div className="input">{input || "0"}</div>
+        <div className="result">{result}</div>
+      </div>
 
-        {/* Scientific Buttons */}
-        <div className="sci-row">
-          <button onClick={() => sci("sin")}>sin</button>
-          <button onClick={() => sci("cos")}>cos</button>
-          <button onClick={() => sci("tan")}>tan</button>
-          <button onClick={() => sci("log")}>log</button>
-          <button onClick={() => sci("ln")}>ln</button>
-        </div>
+      <div className="buttons">
+        {/* Row 1 */}
+        <button onClick={handleClear} className="btn-red">C</button>
+        <button onClick={handleBackspace} className="btn-red">←</button>
+        <button onClick={() => handleClick("%")}>%</button>
+        <button onClick={() => handleClick("/")} className="btn-operator">÷</button>
 
-        <div className="sci-row">
-          <button onClick={() => sci("sqrt")}>√</button>
-          <button onClick={() => sci("pow2")}>x²</button>
-          <button onClick={() => sci("pow3")}>x³</button>
-          <button onClick={backspace}>⌫</button>
-          <button onClick={clearAll} className="clear">C</button>
-        </div>
+        {/* Row 2 */}
+        <button onClick={() => handleClick("7")}>7</button>
+        <button onClick={() => handleClick("8")}>8</button>
+        <button onClick={() => handleClick("9")}>9</button>
+        <button onClick={() => handleClick("*")} className="btn-operator">×</button>
 
-        {/* Normal Buttons */}
-        <div className="grid">
-          <button onClick={() => press("7")}>7</button>
-          <button onClick={() => press("8")}>8</button>
-          <button onClick={() => press("9")}>9</button>
-          <button onClick={() => press("/")}>÷</button>
+        {/* Row 3 */}
+        <button onClick={() => handleClick("4")}>4</button>
+        <button onClick={() => handleClick("5")}>5</button>
+        <button onClick={() => handleClick("6")}>6</button>
+        <button onClick={() => handleClick("-")} className="btn-operator">−</button>
 
-          <button onClick={() => press("4")}>4</button>
-          <button onClick={() => press("5")}>5</button>
-          <button onClick={() => press("6")}>6</button>
-          <button onClick={() => press("*")}>×</button>
+        {/* Row 4 */}
+        <button onClick={() => handleClick("1")}>1</button>
+        <button onClick={() => handleClick("2")}>2</button>
+        <button onClick={() => handleClick("3")}>3</button>
+        <button onClick={() => handleClick("+")} className="btn-operator">+</button>
 
-          <button onClick={() => press("1")}>1</button>
-          <button onClick={() => press("2")}>2</button>
-          <button onClick={() => press("3")}>3</button>
-          <button onClick={() => press("-")}>-</button>
+        {/* Row 5 */}
+        <button onClick={() => handleClick("0")} className="btn-zero">0</button>
+        <button onClick={() => handleClick(".")}>.</button>
+        <button onClick={handleCalculate} className="btn-equal">=</button>
 
-          <button onClick={() => press("0")}>0</button>
-          <button onClick={() => press(".")}>.</button>
-          <button onClick={calculate} className="equal">=</button>
-          <button onClick={() => press("+")}>+</button>
-        </div>
+        {/* Scientific buttons */}
+        <button onClick={() => handleClick("**2")} className="btn-scientific">x²</button>
+        <button onClick={() => handleClick("**3")} className="btn-scientific">x³</button>
+        <button onClick={() => handleClick("**(1/2)")} className="btn-scientific">√</button>
+        <button onClick={() => handleClick("**(1/3)")} className="btn-scientific">∛</button>
       </div>
     </div>
   );
